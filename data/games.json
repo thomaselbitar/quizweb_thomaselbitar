@@ -28,10 +28,17 @@
     "stock": 8
   },
   {
-    "id": 5,
-    "title": "Celeste",
-    "studio": "Maddy Makes Games",
+    "title": "test",
+    "studio": "tesing 69",
+    "price": 69,
+    "stock": 69,
+    "id": 5
+  },
+  {
+    "title": "test",
+    "studio": "this is testing",
     "price": 24.99,
-    "stock": 12
+    "stock": 12,
+    "id": 6
   }
 ]

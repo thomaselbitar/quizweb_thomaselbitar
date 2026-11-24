@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post(
   '/games',
-  adminController.requireFields,
   validateRole('admin'),
+  adminController.requireFields,
   adminController.create
 );
 
