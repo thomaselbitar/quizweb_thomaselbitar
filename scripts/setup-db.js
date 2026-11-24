@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const fs = require('fs/promises');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
 
 function getDbName() {
@@ -12,6 +13,20 @@ function getDbName() {
   return dbName;
 }
 
+async function seedUsers(connection) {
+  const adminHash = await bcrypt.hash('admin123', 10);
+  const userHash = await bcrypt.hash('user1234', 10);
+
+  await connection.query('DELETE FROM users');
+  await connection.query('ALTER TABLE users AUTO_INCREMENT = 1');
+  await connection.query(
+    `INSERT INTO users (email, password_hash, role) VALUES
+      (?, ?, 'admin'),
+      (?, ?, 'user')`,
+    ['admin@gamestore.com', adminHash, 'user@gamestore.com', userHash]
+  );
+}
+
 async function main() {
   const dbName = getDbName();
   const connection = await mysql.createConnection({
@@ -19,15 +34,20 @@ async function main() {
     port: Number(process.env.DB_PORT),
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: dbName,
     multipleStatements: true,
   });
 
   try {
+    await connection.query(
+      `CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
+    );
+    await connection.query(`USE \`${dbName}\``);
+
     const schema = await fs.readFile(path.join(__dirname, '..', 'db', 'schema.sql'), 'utf8');
     const seed = await fs.readFile(path.join(__dirname, '..', 'db', 'seed.sql'), 'utf8');
     await connection.query(schema);
     await connection.query(seed);
+    await seedUsers(connection);
     console.log(`Tables and seed data are ready in "${dbName}".`);
   } finally {
     await connection.end();

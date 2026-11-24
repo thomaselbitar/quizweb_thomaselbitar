@@ -1,6 +1,7 @@
 function logger(req, res, next) {
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] ${req.method} ${req.originalUrl}`);
+  const pathOnly = req.originalUrl.split('?')[0];
+  console.log(`[${timestamp}] ${req.method} ${pathOnly}`);
   next();
 }
 

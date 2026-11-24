@@ -1,10 +1,12 @@
 {
   "name": "quizweb",
   "version": "1.0.0",
-  "description": "Express.js quiz starter with MySQL and JSON file examples",
+  "description": "Game Store API for the web exam",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "dev": "node server.js",
+    "data:reset": "node scripts/reset-data.js",
     "db:create": "node scripts/create-db.js",
     "db:setup": "node scripts/setup-db.js",
     "db:check": "node scripts/db-check.js"
@@ -14,8 +16,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "dotenv": "^18.0.10",
     "express": "^5.3.0",
+    "express-session": "^1.18.2",
     "mysql2": "^3.24.6"
   }
 }

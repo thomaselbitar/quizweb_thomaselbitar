@@ -1,15 +1,11 @@
 function validateId(req, res, next) {
-  const raw = req.params.id;
-  const id = Number(raw);
+  const id = Number(req.params.id);
 
-  if (!Number.isInteger(id) || id <= 0 || String(id) !== raw) {
-    return res.status(400).json({
-      error: 'Invalid id',
-      message: 'id must be a positive integer',
-    });
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({ error: 'Invalid id' });
   }
 
-  req.validatedId = id;
+  req.id = id;
   next();
 }
 

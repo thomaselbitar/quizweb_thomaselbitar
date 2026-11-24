@@ -1,8 +1,5 @@
 function notFound(req, res) {
-  res.status(404).json({
-    error: 'Not found',
-    message: `Cannot ${req.method} ${req.originalUrl}`,
-  });
+  res.status(404).json({ error: 'Not found' });
 }
 
 module.exports = notFound;
